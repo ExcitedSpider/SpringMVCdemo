@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myseu.dao.UserDAO">
+    <insert id="insertUser" parameterType="com.myseu.domain.User" useGeneratedKeys="true" keyProperty="id">
+            INSERT INTO user (uname,upass,gender,birthday,contact)
+                          VALUES ('${uname}','${upass}',${gender},'${birthday}','${contact}')
+    </insert>
+
+    <delete id="deleteUserById" parameterType="com.myseu.domain.User">
+            DELETE FROM user WHERE id = ${id};
+    </delete>
+
+    <update id="changeUserInfo" parameterType="com.myseu.domain.User">
+        UPDATE user
+        <set>
+            <if test="upass!=null">
+                upass= '${upass}',
+            </if>
+            <if test="gender!=-1">
+                gender = ${gender},
+            </if>
+            <if test="birthday!=null">
+                birthday = '${birthday}',
+            </if>
+            <if test="contact!=null">
+                contact = '${contact}'
+            </if>
+        </set>
+        WHERE id = ${id}
+    </update>
+
+    <select id="selectUser" parameterType="com.myseu.domain.User" resultType="com.myseu.domain.User">
+        SELECT * FROM user
+        <where>
+            <if test="id!=0">
+                id = ${id}
+            </if>
+            <if test="uname!=null">
+                AND uname = '${uname}'
+            </if>
+            <if test="gender!=-1">
+                AND gender = ${gender}
+            </if>
+            <if test="contact!=null">
+                AND contact = '${contact}'
+            </if>
+        </where>
+    </select>
+
+    <!--<select id="logInUser" parameterType="com.myseu.domain.User" resultType="com.myseu.domain.User">-->
+        <!--SELECT * FROM USER-->
+<!--&#45;&#45;         这边写的有问题  查询出来数据库所有的记录-->
+        <!--<where>-->
+            <!--<if test="uname!=null">-->
+                <!--AND uname = '${uname}'-->
+            <!--</if>-->
+            <!--<if test="upass!=null">-->
+                <!--AND upass= '${upass}'-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+</mapper>
